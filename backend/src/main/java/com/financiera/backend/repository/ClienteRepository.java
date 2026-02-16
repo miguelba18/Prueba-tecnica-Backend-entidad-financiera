@@ -9,9 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    // Spring Data JPA genera automáticamente la implementación
-    // basándose en el nombre del método
-
     Optional<Cliente> findByNumeroIdentificacion(String numeroIdentificacion);
 
     boolean existsByNumeroIdentificacion(String numeroIdentificacion);

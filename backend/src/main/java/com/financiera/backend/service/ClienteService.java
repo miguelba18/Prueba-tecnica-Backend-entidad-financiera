@@ -2,8 +2,12 @@ package com.financiera.backend.service;
 
 import com.financiera.backend.dto.ClienteDTO;
 import com.financiera.backend.entity.Cliente;
-import com.financiera.backend.exception.*;
+import com.financiera.backend.exception.clientes.ClienteConProductosException;
+import com.financiera.backend.exception.clientes.ClienteMenorDeEdadException;
+import com.financiera.backend.exception.clientes.DatoDuplicadoException;
+import com.financiera.backend.exception.clientes.RecursoNoEncontradoException;
 import com.financiera.backend.repository.ClienteRepository;
+import com.financiera.backend.repository.ProductoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final ProductoRepository productoRepository;
 
     // Crear cliente
     @Transactional
@@ -121,6 +126,12 @@ public class ClienteService {
                 .orElseThrow(() -> new RecursoNoEncontradoException(
                         "No se encontró el cliente con ID: " + id
                 ));
+        long cantidadProductos = productoRepository.countByClienteId(id);
+        if (cantidadProductos > 0) {
+            throw new ClienteConProductosException(
+                    "No se puede eliminar el cliente. Tiene " + cantidadProductos + " producto(s) vinculado(s)"
+            );
+        }
 
 
         clienteRepository.delete(cliente);

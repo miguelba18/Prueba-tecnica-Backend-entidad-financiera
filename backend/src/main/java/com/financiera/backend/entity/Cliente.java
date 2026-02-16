@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -56,4 +59,7 @@ public class Cliente {
     @UpdateTimestamp
     @Column(name = "fecha_modificacion")
     private LocalDateTime fechaModificacion;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Producto> productos = new ArrayList<>();
 }

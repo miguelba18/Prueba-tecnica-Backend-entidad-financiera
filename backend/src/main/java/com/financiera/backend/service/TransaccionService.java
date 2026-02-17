@@ -218,7 +218,7 @@ public class TransaccionService {
 
         dto.setCuentaOrigenId(transaccion.getCuentaOrigen().getId());
         dto.setNumeroCuentaOrigen(transaccion.getCuentaOrigen().getNumeroCuenta());
-        
+
         if (transaccion.getCuentaDestino() != null) {
             dto.setCuentaDestinoId(transaccion.getCuentaDestino().getId());
             dto.setNumeroCuentaDestino(transaccion.getCuentaDestino().getNumeroCuenta());

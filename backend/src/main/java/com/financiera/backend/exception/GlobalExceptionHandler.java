@@ -8,6 +8,8 @@ import com.financiera.backend.exception.clientes.RecursoNoEncontradoException;
 import com.financiera.backend.exception.productos.CuentaNoPuedeCancelarseException;
 import com.financiera.backend.exception.productos.OperacionNoPermitidaException;
 import com.financiera.backend.exception.productos.SaldoInsuficienteException;
+
+import com.financiera.backend.exception.transacciones.CuentaInactivaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -104,6 +106,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(OperacionNoPermitidaException.class)
     public ResponseEntity<Map<String, Object>> manejarOperacionNoPermitida(OperacionNoPermitidaException ex) {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("timestamp", LocalDateTime.now());
+        respuesta.put("mensaje", ex.getMessage());
+        respuesta.put("status", HttpStatus.FORBIDDEN.value());
+
+        return new ResponseEntity<>(respuesta, HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(CuentaInactivaException.class)
+    public ResponseEntity<Map<String, Object>> manejarCuentaInactiva(CuentaInactivaException ex) {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put("timestamp", LocalDateTime.now());
         respuesta.put("mensaje", ex.getMessage());
